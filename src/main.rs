@@ -256,38 +256,61 @@ fn build_ui(app: &Application) {
     response_box.set_margin_bottom(10);
     
     let status_bar = Box::new(gtk::Orientation::Horizontal, 5);
-    let status_label = Label::new(None);
+    let status_label = Label::new(Some("Status:"));
     status_label.set_halign(gtk::Align::Start);
+    status_label.add_css_class("title-2");
+    status_label.set_margin_bottom(15);
     status_bar.append(&status_label);
     response_box.append(&status_bar);
 
-    let headers_label = Label::new(Some("Headers"));
+    let headers_section = Box::new(gtk::Orientation::Vertical, 0);
+    headers_section.set_margin_bottom(20);
+    
+    let headers_label = Label::new(Some("Response Headers"));
+    headers_label.add_css_class("heading");
     headers_label.set_halign(gtk::Align::Start);
-    headers_label.set_margin_top(10);
-    response_box.append(&headers_label);
+    headers_label.set_margin_bottom(8);
+    headers_section.append(&headers_label);
     
     let headers_response_scroll = ScrolledWindow::new();
     headers_response_scroll.set_vexpand(true);
-    headers_response_scroll.set_min_content_height(100);
+    headers_response_scroll.set_min_content_height(120);
+    headers_response_scroll.add_css_class("frame");
+    
     let headers_response_view = TextView::new();
     headers_response_view.set_editable(false);
     headers_response_view.set_monospace(true);
+    headers_response_view.set_margin_start(8);
+    headers_response_view.set_margin_end(8);
+    headers_response_view.set_margin_top(8);
+    headers_response_view.set_margin_bottom(8);
     headers_response_scroll.set_child(Some(&headers_response_view));
-    response_box.append(&headers_response_scroll);
+    headers_section.append(&headers_response_scroll);
+    response_box.append(&headers_section);
 
-    let body_label = Label::new(Some("Body"));
+    let body_section = Box::new(gtk::Orientation::Vertical, 0);
+    
+    let body_label = Label::new(Some("Response Body"));
+    body_label.add_css_class("heading");
     body_label.set_halign(gtk::Align::Start);
-    body_label.set_margin_top(10);
-    response_box.append(&body_label);
+    body_label.set_margin_bottom(8);
+    body_section.append(&body_label);
     
     let response_scroll = ScrolledWindow::new();
     response_scroll.set_vexpand(true);
     response_scroll.set_min_content_height(300);
+    response_scroll.add_css_class("frame");
+    
     let response_view = TextView::new();
     response_view.set_editable(false);
     response_view.set_monospace(true);
+    response_view.set_margin_start(8);
+    response_view.set_margin_end(8);
+    response_view.set_margin_top(8);
+    response_view.set_margin_bottom(8);
     response_scroll.set_child(Some(&response_view));
-    response_box.append(&response_scroll);
+    body_section.append(&response_scroll);
+    response_box.append(&body_section);
 
     response_notebook.append_page(&response_box, Some(&Label::new(Some("Response"))));
 
